@@ -5,6 +5,10 @@ import PopupWithForm from './PopupWithForm.js';
 import { useState } from 'react';
 import ImagePopup from './ImagePopup.js'
 import Card from './Card.js';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import { CurrentCardContext } from '../contexts/CurrentCardContext.js'
+import { tokenApi } from "../utils/Api.js";
+import { useEffect } from 'react';
 
 
 
@@ -14,7 +18,28 @@ export default function App({}) {
    const [addCardPopup, setAddCardPopup] = useState(false);
    const [editAvatarPopup, setEditAvatarPopup] = useState(false);
    const [zoomCard, setZoomCard] = useState(null);
+   const [currentUser, setCurrentUser ] = useState({});
+   const [currentCard, setCurrentCard ] = useState({});
 
+   // получаем данные аватара и профиля с сервера
+   useEffect(() => {
+      tokenApi
+       .getUserData()
+       .then((data) => {
+         setCurrentUser(data)
+       })
+       .catch((err) => console.log(err));
+   }, []);
+
+   //Получение карточек
+   useEffect(() => {
+      tokenApi
+       .getInitialCards()
+       .then((cards) => {
+         setCurrentCard(cards)
+       })
+       .catch((err) => console.log(err));
+   }, []);
 
    function handleEditProfileClick(){
       setEditProfilePopup(true)
@@ -40,7 +65,9 @@ export default function App({}) {
     }
 
    return (
-    <div className='page'>
+      <CurrentUserContext.Provider value={currentUser}>
+         <CurrentCardContext.Provider value={currentCard}>
+         <div className='page'>
       <Header/>
       <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onClickCard={handleCardClick}/>
       <PopupWithForm isOpen={editProfilePopup} onClose={closePopupAll} popupTitle={"Редактировать профиль"} textButton={"Сохранить"}>
@@ -63,6 +90,8 @@ export default function App({}) {
       <ImagePopup card={zoomCard} onClose={closePopupAll}/>
 
       <Footer/>
-    </div>
+            </div>
+         </CurrentCardContext.Provider>
+      </CurrentUserContext.Provider>
   );
 }
