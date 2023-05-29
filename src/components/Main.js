@@ -1,15 +1,11 @@
 import React from "react";
 import App from './App.js'
-import { useState, useEffect } from "react";
 import Card from "./Card.js";
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import { CurrentCardContext } from "../contexts/CurrentCardContext.js";
 
-export default function Main ({onEditProfile, onAddPlace, onEditAvatar, onClickCard}) {
+export default function Main ({onEditProfile, onAddPlace, onEditAvatar, onClickCard, cards }) {
 
    const currentUser = React.useContext(CurrentUserContext);
-   const currentCard = React.useContext(CurrentCardContext);
-   const [cards, setCards] = useState([])
 
    return (
    <>
@@ -28,13 +24,17 @@ export default function Main ({onEditProfile, onAddPlace, onEditAvatar, onClickC
                <button onClick={onAddPlace} className="profile__button" type="button"></button>
             </section>
             <div className="elements">
-                  {cards && 
-                     cards.map((item) => {
-                        <Card item={currentCard.card} key={currentCard.card.id} onClickCard={onClickCard} />
-                     })}
-                  {/* {currentCard.map((card) => (
-                     <Card card={card} key={card.id} onClickCard={onClickCard} />
-               ))} */}
+               {cards.map((card) => (
+                <Card
+                  card={card}
+                  id = {card.id}
+                  key={card._id}
+                  name={card.name}
+                  link={card.link}
+                  likes={card.likes}
+                  onClickCard={onClickCard}
+                />
+              ))}
             </div>
       </main>
       </>

@@ -6,7 +6,6 @@ import { useState } from 'react';
 import ImagePopup from './ImagePopup.js'
 import Card from './Card.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import { CurrentCardContext } from '../contexts/CurrentCardContext.js'
 import { tokenApi } from "../utils/Api.js";
 import { useEffect } from 'react';
 
@@ -19,7 +18,15 @@ export default function App({}) {
    const [editAvatarPopup, setEditAvatarPopup] = useState(false);
    const [zoomCard, setZoomCard] = useState(null);
    const [currentUser, setCurrentUser ] = useState({});
-   const [currentCard, setCurrentCard ] = useState({});
+   const [cards, setCards ] = useState([])
+
+   // useEffect(() => {
+   //    Promise.all([tokenApi.getInitialCards()])
+   //    .then(([card]) => {
+   //       setCards(card);
+   //    })
+   //    .catch((err) => {console.log(`Возникла глобальная ошибка, ${err}`)})
+   // }, [])
 
    // получаем данные аватара и профиля с сервера
    useEffect(() => {
@@ -31,14 +38,21 @@ export default function App({}) {
        .catch((err) => console.log(err));
    }, []);
 
-   //Получение карточек
+   // //Получение карточек
    useEffect(() => {
       tokenApi
-       .getInitialCards()
-       .then((cards) => {
-         setCurrentCard(cards)
-       })
-       .catch((err) => console.log(err));
+         .getInitialCards(cards)
+         .then((card) => {
+            setCards(
+               card.map((item) => ({
+                  link: item.link,
+                  name: item.name,
+                  cardId: item._id,
+                  likes: item.likes,
+               }))
+            );
+         })
+         .catch((err) => {console.log(`Возникла глобальная ошибка , ${err}`)})
    }, []);
 
    function handleEditProfileClick(){
@@ -66,10 +80,9 @@ export default function App({}) {
 
    return (
       <CurrentUserContext.Provider value={currentUser}>
-         <CurrentCardContext.Provider value={currentCard}>
          <div className='page'>
       <Header/>
-      <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onClickCard={handleCardClick}/>
+      <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onClickCard={handleCardClick} cards={cards}/>
       <PopupWithForm isOpen={editProfilePopup} onClose={closePopupAll} popupTitle={"Редактировать профиль"} textButton={"Сохранить"}>
             <input type="text" placeholder="Имя" value="" class="popup__input" name="form__name" id="name-input" minlength="2" maxlength="40" required/>
             <span class="form__input-error name-input-error"></span>
@@ -91,7 +104,6 @@ export default function App({}) {
 
       <Footer/>
             </div>
-         </CurrentCardContext.Provider>
       </CurrentUserContext.Provider>
   );
 }
