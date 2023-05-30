@@ -3,7 +3,15 @@ import App from './App.js'
 import Card from "./Card.js";
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
-export default function Main ({onEditProfile, onAddPlace, onEditAvatar, onClickCard, cards }) {
+export default function Main ({
+      handleCardLike,
+      onEditProfile, 
+      onAddPlace, 
+      onEditAvatar, 
+      onClickCard, 
+      cards,
+    }) 
+{
 
    const currentUser = React.useContext(CurrentUserContext);
 
@@ -27,11 +35,8 @@ export default function Main ({onEditProfile, onAddPlace, onEditAvatar, onClickC
                {cards.map((card) => (
                 <Card
                   card={card}
-                  id = {card.id}
                   key={card._id}
-                  name={card.name}
-                  link={card.link}
-                  likes={card.likes}
+                  onCradLike={handleCardLike}
                   onClickCard={onClickCard}
                 />
               ))}
