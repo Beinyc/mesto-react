@@ -78,15 +78,6 @@ export default class Api {
       });
     }
 
-    // changeLikeCardStatus(cardId, isLiked) {
-    //   return fetch(`${this._urlSrvers}/cards/${cardId}/likes`, {
-    //     method: isLiked ? "DELETE" : "PUT",
-    //     headers: this._headers,
-    //   }).then((res) => {
-    //     return this._serverResponse(res);
-    //   });
-    // }
-
     updateAvatar(data) {
       return fetch(`${this._urlSrvers}/users/me/avatar`, {
         method: "PATCH",

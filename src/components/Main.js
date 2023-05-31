@@ -36,7 +36,7 @@ export default function Main ({
                 <Card
                   card={card}
                   key={card._id}
-                  onCradLike={handleCardLike}
+                  onLikeCrad={handleCardLike}
                   onClickCard={onClickCard}
                 />
               ))}

@@ -21,8 +21,8 @@ export default function Card ({ card, onClickCard, onLikeCrad }) {
          onClickCard(card);
       }
 
-      function handleCardLike(){
-         onLikeCrad(card);
+      function handleLikeClick(){
+        onLikeCrad(card);
       }
 
     return (
@@ -31,7 +31,7 @@ export default function Card ({ card, onClickCard, onLikeCrad }) {
              <div className="elements__signature">
                  <h2 className="elements__title">{card.name}</h2>
                   <div className="elements__like-box">
-                  <button className={cardLikeButtonClassName} onClick={handleCardLike} type="button"></button>
+                  <button className={cardLikeButtonClassName} onClick={handleLikeClick} type="button"></button>
                   <p className="elements__number-like">{card.likes.length}</p>
              </div>
            </div>

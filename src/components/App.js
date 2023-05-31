@@ -48,15 +48,29 @@ export default function App({}) {
          .catch((err) => {console.log(`Возникла глобальная ошибка , ${err}`)})
    }, []);
 
-   function handleCardLike(card) {
-      // Снова проверяем, есть ли уже лайк на этой карточке
-      const isLiked = card.likes.some(i => i._id === currentUser._id);
-      
-      // Отправляем запрос в API и получаем обновлённые данные карточки
-      tokenApi.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
-          setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-      });
-  }
+  function handleCardLike(card) {
+   const isLiked = card.likes.some((card) => card._id === currentUser._id)
+
+   if (isLiked) {
+      tokenApi
+       .deleteLikeCard(card._id)
+       .then((card) =>
+         setCards((state) =>
+           state.map((item) => (item._id === card._id ? card : item))
+         )
+       )
+       .catch((error) => console.log`(Ошибка: ${error})`)
+   } else {
+      tokenApi
+       .cardLike(card._id)
+       .then((card) =>
+         setCards((state) =>
+           state.map((item) => (item._id === card._id ? card : item))
+         )
+       )
+       .catch((error) => console.log`(Ошибка: ${error})`)
+   }
+ }
 
    function handleEditProfileClick(){
       setEditProfilePopup(true)
