@@ -18,7 +18,7 @@ export default function App({}) {
    const [editAvatarPopup, setEditAvatarPopup] = useState(false);
    const [zoomCard, setZoomCard] = useState(null);
    const [currentUser, setCurrentUser ] = useState({});
-   const [cards, setCards ] = useState([])
+   const [cards, setCards ] = useState([]);
 
    // получаем данные аватара и профиля с сервера
    useEffect(() => {
@@ -95,6 +95,16 @@ export default function App({}) {
       setZoomCard(card);
     }
 
+   function handleCardDelete (card){
+      tokenApi
+       .deleteCard(card._id)
+       .then((res) => {
+         const newCard = cards.filter((item) => item._id !== card._id );
+         setCards(newCard);
+       })
+       .catch((error) => console.log`(Ошибка: ${error})`)
+   }
+
    return (
       <CurrentUserContext.Provider value={currentUser}>
          <div className='page'>
@@ -105,7 +115,8 @@ export default function App({}) {
             onAddPlace={handleAddPlaceClick} 
             onEditAvatar={handleEditAvatarClick} 
             onClickCard={handleCardClick}
-            handleCardLike={handleCardLike}   
+            handleCardLike={handleCardLike} 
+            handleCardDelete={handleCardDelete}  
       />
       <PopupWithForm 
             isOpen={editProfilePopup} 

@@ -10,6 +10,7 @@ export default function Main ({
       onEditAvatar, 
       onClickCard, 
       cards,
+      handleCardDelete,
     }) 
 {
 
@@ -38,6 +39,7 @@ export default function Main ({
                   key={card._id}
                   onLikeCrad={handleCardLike}
                   onClickCard={onClickCard}
+                  onCardDelete={handleCardDelete}
                 />
               ))}
             </div>
