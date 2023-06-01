@@ -8,6 +8,7 @@ import Card from './Card.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import { tokenApi } from "../utils/Api.js";
 import { useEffect } from 'react';
+import EditProfilePopup from './EditProfilePopup.js';
 
 
 
@@ -118,16 +119,10 @@ export default function App({}) {
             handleCardLike={handleCardLike} 
             handleCardDelete={handleCardDelete}  
       />
-      <PopupWithForm 
-            isOpen={editProfilePopup} 
-            onClose={closePopupAll} 
-            popupTitle={"Редактировать профиль"} 
-            textButton={"Сохранить"}>
-            <input type="text" placeholder="Имя" value="" class="popup__input" name="form__name" id="name-input" minlength="2" maxlength="40" required/>
-            <span class="form__input-error name-input-error"></span>
-            <input type="text" placeholder="О себе" value="" class="popup__input popup__about-me" name="form__status" id="status-input" minlength="2" maxlength="200" required/>
-            <span class="form__input-error status-input-error"></span>
-      </PopupWithForm>
+      <EditProfilePopup
+            isOpen={editProfilePopup}
+            onClose={closePopupAll}
+      />
       <PopupWithForm 
             isOpen={addCardPopup} 
             onClose={closePopupAll} 
