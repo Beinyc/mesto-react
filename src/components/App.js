@@ -126,7 +126,8 @@ export default function App({}) {
           closePopupAll();
         })
         .catch((err) => console.log(err))
-        .finally(() => {setIsLoading(false);
+        .finally(() => {
+         setIsLoading(false);
        });
     }
 

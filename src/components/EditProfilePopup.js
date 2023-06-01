@@ -40,10 +40,10 @@ export default function EditProfilePopup ({
     return(
         <PopupWithForm 
             name='profile'
-            isOpen={isOpen} 
-            onClose={onClose} 
-            popupTitle={"Редактировать профиль"} 
-            textButton= {onLoading ? "Сохранение..." : "Сохранить"}
+            isOpen = {isOpen} 
+            onClose = {onClose} 
+            popupTitle = {"Редактировать профиль"} 
+            textButton = {onLoading ? "Сохранение..." : "Сохранить"}
             onSubmit={handleSubmit}
             >
             <input 

@@ -5,6 +5,7 @@ export default function AddPlacePopup ({
     isOpen,
     onClose,
     onAddPlace,
+    onLoading,
 }) {
 
     const [title, setTitle] = useState('');
@@ -35,7 +36,7 @@ export default function AddPlacePopup ({
             isOpen={isOpen} 
             onClose={onClose} 
             popupTitle={"Новое место"} 
-            textButton={"Создать"}
+            textButton={onLoading ? "Сохранение..." : "Создать"}
             onSubmit={handleSubmit}
             >
             <input

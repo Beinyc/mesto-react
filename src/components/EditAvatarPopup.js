@@ -5,6 +5,7 @@ export default function EditAvatarPopup ({
     isOpen, 
     onClose,
     onUpdateAvatar,
+    onLoading,
 }){
 
     const avatarRef = useRef();
@@ -25,7 +26,7 @@ export default function EditAvatarPopup ({
             isOpen={isOpen} 
             onClose={onClose} 
             popupTitle={"Обновить аватар"} 
-            textButton={"Сохранить"}
+            textButton={onLoading ? "Сохранение..." : "Сохранить"}
             onSubmit={handleSubmit}
         >    
         <input
