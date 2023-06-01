@@ -10,6 +10,7 @@ import { tokenApi } from "../utils/Api.js";
 import { useEffect } from 'react';
 import EditProfilePopup from './EditProfilePopup.js';
 import EditAvatarPopup from './EditAvatarPopup.js';
+import AddPlacePopup from './AddPlacePopup.js';
 
 
 
@@ -21,6 +22,7 @@ export default function App({}) {
    const [zoomCard, setZoomCard] = useState(null);
    const [currentUser, setCurrentUser ] = useState({});
    const [cards, setCards ] = useState([]);
+   const [isLoading, setIsLoading] = useState(false);
 
    // получаем данные аватара и профиля с сервера
    useEffect(() => {
@@ -34,6 +36,7 @@ export default function App({}) {
 
    //Получение карточек
    useEffect(() => {
+      setIsLoading(true);
       tokenApi
          .getInitialCards(cards)
          .then((card) => {
@@ -54,6 +57,7 @@ export default function App({}) {
    const isLiked = card.likes.some((card) => card._id === currentUser._id)
 
    if (isLiked) {
+      setIsLoading(true);
       tokenApi
        .deleteLikeCard(card._id)
        .then((card) =>
@@ -98,6 +102,7 @@ export default function App({}) {
     }
 
    function handleCardDelete (card){
+      setIsLoading(true);
       tokenApi
        .deleteCard(card._id)
        .then((res) => {
@@ -105,9 +110,12 @@ export default function App({}) {
          setCards(newCard);
        })
        .catch((error) => console.log`(Ошибка: ${error})`)
+       .finally(() => {setIsLoading(false);
+       });
    }
 
    function handleUpdateUser({name, about}) {
+      setIsLoading(true);
       tokenApi
         .editProfile({
           name: name,
@@ -118,9 +126,12 @@ export default function App({}) {
           closePopupAll();
         })
         .catch((err) => console.log(err))
+        .finally(() => {setIsLoading(false);
+       });
     }
 
     function handleUpdateAvatar(link) {
+      setIsLoading(true);
       tokenApi
         .updateAvatar(link)
         .then((res) => {
@@ -130,6 +141,23 @@ export default function App({}) {
         .catch((err) => {
           console.log(`Возникла ошибка при изменении аватара, ${err}`);
         })
+        .finally(() => {setIsLoading(false);
+        });
+    }
+
+    function handleAddPlace(data) {
+      setIsLoading(true);
+      tokenApi
+        .createNewCard(data)
+        .then((newCard) => {
+          setCards([newCard, ...cards]);
+          closePopupAll();
+        })
+        .catch((err) => {
+          console.log(`Возникла ошибка при добавлении карточки, ${err}`);
+        })
+        .finally(() => {setIsLoading(false);
+        });
     }
 
    return (
@@ -149,21 +177,19 @@ export default function App({}) {
             isOpen={editProfilePopup}
             onClose={closePopupAll}
             onUpdateUser={handleUpdateUser}
+            onLoading={isLoading}
       />
-      <PopupWithForm 
-            isOpen={addCardPopup} 
-            onClose={closePopupAll} 
-            popupTitle={"Новое место"} 
-            textButton={"Создать"}>
-            <input type="text" value="" placeholder="Название" class="popup__input" name="form__name" id="card-input" minlength="2" maxlength="30" required/>
-            <span class="form__input-error card-input-error"></span>
-            <input type="url" value="" placeholder="Ссылка на картину" class="popup__input popup__about-me" name="form__status" id="url-input" required/>
-            <span class="form__input-error url-input-error"></span>
-      </PopupWithForm>
+      <AddPlacePopup
+            isOpen={addCardPopup}
+            onClose={closePopupAll}
+            onAddPlace={handleAddPlace}
+            onLoading={isLoading}
+      />
       <EditAvatarPopup
-         isOpen={editAvatarPopup}
-         onClose={closePopupAll}
-         onUpdateAvatar={handleUpdateAvatar}
+            isOpen={editAvatarPopup}
+            onClose={closePopupAll}
+            onUpdateAvatar={handleUpdateAvatar}
+            onLoading={isLoading}
       />
       <ImagePopup 
             card={zoomCard} 

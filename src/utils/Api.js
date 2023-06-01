@@ -46,7 +46,10 @@ export default class Api {
       return fetch(`${this._urlSrvers}/cards`, {
         method: "POST",
         headers: this._headers,
-        body: JSON.stringify({ name: cardData["form__name"], link: cardData["form__status"] }),
+        body: JSON.stringify({ 
+          name: cardData.name, 
+          link: cardData.link, 
+        }),
       }).then((res) => {
         return this._serverResponse(res);
       });
