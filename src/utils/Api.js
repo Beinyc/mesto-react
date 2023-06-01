@@ -33,14 +33,15 @@ export default class Api {
   
     editProfile(userInfo) {
       return fetch(`${this._urlSrvers}/users/me`, {
-        method: "PATCH",
+        method: 'PATCH',
         headers: this._headers,
-        body: JSON.stringify({ name: userInfo["form__name"], about: userInfo["form__status"] }),
-      }).then((res) => {
-        return this._serverResponse(res);
-      });
+        body: JSON.stringify({
+          name: userInfo.name,
+          about: userInfo.about,
+        }),
+      }).then(this._serverResponse);
     }
-  
+
     createNewCard(cardData) {
       return fetch(`${this._urlSrvers}/cards`, {
         method: "POST",

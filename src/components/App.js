@@ -106,6 +106,19 @@ export default function App({}) {
        .catch((error) => console.log`(Ошибка: ${error})`)
    }
 
+   function handleUpdateUser({name, about}) {
+      tokenApi
+        .editProfile({
+          name: name,
+          about: about,
+        })
+        .then((res) => {
+          setCurrentUser(res);
+          closePopupAll();
+        })
+        .catch((err) => console.log(err))
+    }
+
    return (
       <CurrentUserContext.Provider value={currentUser}>
          <div className='page'>
@@ -122,6 +135,7 @@ export default function App({}) {
       <EditProfilePopup
             isOpen={editProfilePopup}
             onClose={closePopupAll}
+            onUpdateUser={handleUpdateUser}
       />
       <PopupWithForm 
             isOpen={addCardPopup} 
