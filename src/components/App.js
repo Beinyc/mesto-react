@@ -9,6 +9,7 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import { tokenApi } from "../utils/Api.js";
 import { useEffect } from 'react';
 import EditProfilePopup from './EditProfilePopup.js';
+import EditAvatarPopup from './EditAvatarPopup.js';
 
 
 
@@ -119,6 +120,18 @@ export default function App({}) {
         .catch((err) => console.log(err))
     }
 
+    function handleUpdateAvatar(link) {
+      tokenApi
+        .updateAvatar(link)
+        .then((res) => {
+          setCurrentUser(res);
+          closePopupAll();
+        })
+        .catch((err) => {
+          console.log(`Возникла ошибка при изменении аватара, ${err}`);
+        })
+    }
+
    return (
       <CurrentUserContext.Provider value={currentUser}>
          <div className='page'>
@@ -147,15 +160,11 @@ export default function App({}) {
             <input type="url" value="" placeholder="Ссылка на картину" class="popup__input popup__about-me" name="form__status" id="url-input" required/>
             <span class="form__input-error url-input-error"></span>
       </PopupWithForm>
-      <PopupWithForm 
-            isOpen={editAvatarPopup} 
-            onClose={closePopupAll} 
-            popupTitle={"Обновить аватар"} 
-            textButton={"Сохранить"}>
-               <input type="url" value="" placeholder="Ссылка" class="popup__input" name="form__name" id="avatar-input" minlength="2" required/>
-               <span class="form__input-error avatar-input-error"></span>
-      </PopupWithForm>
-
+      <EditAvatarPopup
+         isOpen={editAvatarPopup}
+         onClose={closePopupAll}
+         onUpdateAvatar={handleUpdateAvatar}
+      />
       <ImagePopup 
             card={zoomCard} 
             onClose={closePopupAll}/>
