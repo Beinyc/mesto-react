@@ -36,7 +36,7 @@ export default function AddPlacePopup ({
             isOpen={isOpen} 
             onClose={onClose} 
             popupTitle={"Новое место"} 
-            textButton={onLoading ? "Сохранение..." : "Создать"}
+            textButton={onLoading ? "Создание..." : "Создать"}
             onSubmit={handleSubmit}
             >
             <input
@@ -44,25 +44,25 @@ export default function AddPlacePopup ({
                 type="text" 
                 value={title || ''} 
                 placeholder="Название" 
-                class="popup__input" 
+                className="popup__input" 
                 name="form__name" 
                 id="card-input" 
-                minlength="2" 
-                maxlength="30" 
+                minLength="2" 
+                maxLength="30" 
                 required
             />
-            <span class="form__input-error card-input-error"></span>
+            <span className="form__input-error card-input-error"></span>
             <input
                 onChange={handleChangeLink}
                 type="url" 
                 value={link || ''}
                 placeholder="Ссылка на картину" 
-                class="popup__input popup__about-me" 
+                className="popup__input popup__about-me" 
                 name="form__status" 
                 id="url-input" 
                 required
             />
-            <span class="form__input-error url-input-error"></span>
+            <span className="form__input-error url-input-error"></span>
         </PopupWithForm>
     );
 }
